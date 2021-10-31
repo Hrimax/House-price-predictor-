@@ -1,0 +1,28 @@
+v=1:6;
+C=nchoosek(v,3);
+T=readtable('Housing_Price.csv');
+X=[T.LotArea,T.OverallQual,T.OverallCond,T.TotRmsAbvGrd,T.GarageArea,T.MSSubClass];
+Y=T.SalePrice;
+Xtrain=X(1:1022,:);
+Ytrain=Y(1:1022,:);
+Xtest=X(1023:1314,:);
+Ytest=Y(1023:1314,:);
+Xacc=X(1315:end,:);
+Yacc=Y(1315:end,:);
+R=[];
+
+for i=1:20
+    a=C(i,1);
+    b=C(i,2);
+    c=C(i,3);
+    
+    mdl=fitlm([Xtrain(:,a),Xtrain(:,b),Xtrain(:,c)],Ytrain);
+    y=mdl.predict([Xtest(:,a),Xtest(:,b),Xtest(:,c)]);
+    R(i)=(corr(Ytest,y))^2;
+end
+[v,j]=max(R);
+model=fitlm([Xtrain(:,C(j,1)),Xtrain(:,C(j,2)),Xtrain(:,C(j,3))],Ytrain);
+y1=model.predict([Xacc(:,C(j,1)),Xacc(:,C(j,2)),Xacc(:,C(j,3))]);
+Accucheck=(corr(Yacc,y1))^2;
+
+

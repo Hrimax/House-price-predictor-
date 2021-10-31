@@ -24,5 +24,10 @@ end
 model=fitlm([Xtrain(:,C(j,1)),Xtrain(:,C(j,2)),Xtrain(:,C(j,3))],Ytrain);
 y1=model.predict([Xacc(:,C(j,1)),Xacc(:,C(j,2)),Xacc(:,C(j,3))]);
 Accucheck=(corr(Yacc,y1))^2;
+plot(Yacc/max(Y),y1/max(Y),'*');
+hold on
+plot(0:0.1:1,0:0.1:1);
+xlabel('Yactual/max(Y)');
+ylabel('Ypredicted/max(Y)');
 
 
